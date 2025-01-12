@@ -4,12 +4,19 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { useRouter } from 'next/navigation';
-import { useSignIn } from '@/hooks/useAuth';
+// import { useSignIn } from '@/hooks/useAuth';
 import * as cookies from 'cookies-js';
 import FormGenerator from '@/components/elements/form-generator';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSeparator,
+  InputOTPSlot,
+} from '@/components/ui/input-otp';
+import { useVerifyEmail } from '@/hooks/useAuth';
+import { useParams } from 'next/navigation';
 
 export const signinSchema = z.object({
   email: z.string().email().min(1, { message: 'Field ini harus diisi' }),
@@ -17,11 +24,16 @@ export const signinSchema = z.object({
 });
 type FormData = z.infer<typeof signinSchema>;
 
-const SignInForm = () => {
-  const { mutate, status } = useSignIn();
+const VerifyEmailFrom = () => {
+  const params = useParams();
+  const email = decodeURIComponent(params.email as string);
+  const [value, setValue] = React.useState('');
+  const { mutate, status } = useVerifyEmail();
   const form = useForm({
     resolver: zodResolver(signinSchema),
   });
+
+  console.log(email);
 
   // const handleSubmit = () => {
   //   const { email, password } = form.getValues();
@@ -30,40 +42,37 @@ const SignInForm = () => {
   // };
   return (
     <div className="space-y-4 w-full">
-      <FormGenerator
-        form={form}
-        id="form"
-        onSubmit={(val) => mutate(val)}
-        data={[
-          {
-            label: 'Email',
-            name: 'email',
-            type: 'text',
-            placeholder: 'example@gmail.com',
-            grid: 12,
-          },
-          {
-            label: 'Password',
-            name: 'password',
-            placeholder: '******',
-            type: 'text',
-            grid: 12,
-          },
-        ]}
-      />
+      <InputOTP
+        className=" justify-center"
+        maxLength={6}
+        value={value}
+        onChange={setValue}
+      >
+        <InputOTPGroup>
+          <InputOTPSlot index={0} />
+          <InputOTPSlot index={1} />
+          <InputOTPSlot index={2} />
+        </InputOTPGroup>
+        <InputOTPSeparator />
+        <InputOTPGroup>
+          <InputOTPSlot index={3} />
+          <InputOTPSlot index={4} />
+          <InputOTPSlot index={5} />
+        </InputOTPGroup>
+      </InputOTP>
+
       <Button
         className="w-full"
-        form="form"
-        type="submit"
+        onClick={() => mutate({ email, otp: value })}
         loading={status === 'pending'}
       >
-        Sign In
+        Register
       </Button>
       <div className="w-full flex justify-center mt-6">
         <p className="text-xs text-muted-foreground">
-          Don't have an account yet?{' '}
+          Resend OTP{' '}
           <Link href="/sign-up" className="text-blue-500 hover:underline">
-            Register
+            Klik disini
           </Link>
         </p>
       </div>
@@ -71,4 +80,4 @@ const SignInForm = () => {
   );
 };
 
-export default SignInForm;
+export default VerifyEmailFrom;

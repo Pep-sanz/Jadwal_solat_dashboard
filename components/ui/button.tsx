@@ -53,7 +53,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <Comp
         className={cn(
-          'space-x-2',
+          'space-x-2 flex items-center',
           buttonVariants({ variant, size, className }),
         )}
         ref={ref}

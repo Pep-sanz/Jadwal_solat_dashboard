@@ -1,10 +1,15 @@
 'use client';
 
 import { TooltipProvider } from '@/components/ui/tooltip';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import moment from 'moment';
 
 export default function Providers({ children }: { children: React.ReactNode }) {
+  useEffect(() => {
+    moment.locale('id');
+  }, []);
+
   const [client] = React.useState(
     new QueryClient({
       defaultOptions: {

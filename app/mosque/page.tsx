@@ -4,6 +4,6 @@ const MosqueList = dynamic(() => import('@/modules/mosque/mosque-list'), {
   ssr: false,
 });
 
-export default function ProductsPage() {
+export default async function Page() {
   return <MosqueList />;
 }

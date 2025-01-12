@@ -1,28 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
-// import { url } from 'inspector';
 
 export function middleware(req: NextRequest) {
-  const cookieStore = cookies().get(process?.env?.COOKIE_NAME as string)?.value;
-  const currentPathname = req?.nextUrl.pathname;
+  const accessToken = cookies().get(
+    process.env.NEXT_PUBLIC_ACCESS_TOKEN_NAME as string,
+  )?.value;
+  const { pathname } = req.nextUrl;
 
-  if (currentPathname == '/') {
+  // Daftar jalur yang tidak memerlukan autentikasi
+  const publicPaths = ['/sign-in', '/forgot-password', '/sign-up'];
+
+  // Jika pengguna mencoba mengakses jalur publik tetapi sudah login, arahkan ke dashboard
+  if (publicPaths.includes(pathname) && accessToken) {
+    return NextResponse.redirect(new URL('/', req.url));
+  }
+
+  // Jika pengguna mencoba mengakses halaman yang memerlukan autentikasi tetapi tidak login
+  const protectedPaths = ['/mosque/*', '/dashboard/*'];
+  const isProtectedPath = protectedPaths.some((protectedPath) =>
+    pathname.startsWith(protectedPath),
+  );
+
+  if (isProtectedPath && !accessToken) {
     return NextResponse.redirect(new URL('/sign-in', req.url));
   }
 
-  const pathAllowedUnSignin = ['/sign-in', '/forgot-password'];
-  if (pathAllowedUnSignin.includes(currentPathname) && cookieStore) {
-    return NextResponse.redirect(new URL('/dashboard', req.url));
-  }
-
-  const pathAfterSignin = [
-    '/dashboard/*',
-    '/master-data/*',
-    'invoice/*',
-    'complaint/*',
-  ];
-
-  if (pathAfterSignin.includes(currentPathname) && !cookieStore) {
+  // Jika pengguna mengakses root tanpa login, arahkan ke halaman sign-in
+  if (pathname === '/' && !accessToken) {
     return NextResponse.redirect(new URL('/sign-in', req.url));
   }
+
+  // Jika tidak ada kondisi yang terpenuhi, lanjutkan ke halaman yang diminta
+  return NextResponse.next();
 }

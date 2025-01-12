@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { usePathname } from 'next/navigation';
+import path from 'path';
 
 export default function AuthLayout({
   children,
@@ -18,15 +19,21 @@ export default function AuthLayout({
   console.log(pathName);
   return (
     <div className="min-h-screen flex justify-center items-start md:items-center p-8">
-      <Card className="w-full max-w-sm">
+      <Card className="max-w-sm">
         <CardHeader>
           <CardTitle className="text-2xl">
-            {pathName === '/sign-up' ? 'Sign Up' : 'Sign In'}
+            {pathName === '/sign-up'
+              ? 'Sign Up'
+              : pathName === '/sign-in'
+                ? 'Sign In'
+                : 'Verify Email'}
           </CardTitle>
           <CardDescription>
             {pathName === '/sign-up'
               ? 'Enter your email correctly to receive the OTP code'
-              : ' Please enter your email and password correctly '}
+              : pathName === '/sign-in'
+                ? 'Enter your email and password to sign in'
+                : 'Enter the OTP code to verify your email'}
           </CardDescription>
         </CardHeader>
         <CardFooter>{children}</CardFooter>

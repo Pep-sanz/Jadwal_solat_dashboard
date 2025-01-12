@@ -44,6 +44,7 @@ import clsx from 'clsx';
 import { useDebounce } from 'use-debounce';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '../ui/button';
+import { Switch } from '../ui/switch';
 
 export interface DataFormType {
   // name:''
@@ -62,7 +63,8 @@ export interface DataFormType {
     | 'timepicker'
     | 'upload'
     | 'fieldArray'
-    | 'datepicker';
+    | 'datepicker'
+    | 'switch';
   name: string;
   placeholder?: string;
   helperText?: string;
@@ -70,6 +72,7 @@ export interface DataFormType {
   queryKey?: string; /// THIS IS FOR TRIGER REFETCH IN SEARCH ONCAHGE // REQUIRED IF TYPE COMOBOX
   grid?: keyof typeof listColSpan;
   defaultValue?: any;
+  disabled?: boolean;
   options?: { id: string; label: string }[];
   // fieldArrayOptions?: {
   //   form: UseFieldArrayReturn;
@@ -136,6 +139,7 @@ const FormGenerator = ({ form, data, onSubmit, id, className }: Props) => {
                       <FormLabel>{val.label}</FormLabel>
                       <FormControl>
                         <Input
+                          disabled={val.disabled}
                           type={val.type} // Gunakan `val.type` untuk menyesuaikan type input
                           placeholder={val.placeholder}
                           defaultValue={val.defaultValue}
@@ -265,6 +269,38 @@ const FormGenerator = ({ form, data, onSubmit, id, className }: Props) => {
                           // disabled={val}
                           type="date"
                           placeholder={val.placeholder}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            );
+          }
+
+          if (val.type == 'switch') {
+            return (
+              <div
+                key={val.name}
+                className={clsx(
+                  `${
+                    listColSpan[(val.grid as keyof typeof listColSpan) || 12]
+                  }`,
+                )}
+              >
+                <FormField
+                  control={form.control}
+                  name={val.name}
+                  render={({ field }) => (
+                    <FormItem className="space-x-4 flex gap-2 items-center">
+                      <FormLabel>{val.label}</FormLabel>
+                      <FormControl>
+                        <Switch
+                          className="!m-0"
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
                           {...field}
                         />
                       </FormControl>
@@ -471,7 +507,7 @@ const FormGenerator = ({ form, data, onSubmit, id, className }: Props) => {
                     <FormItem>
                       <FormLabel>{val.label}</FormLabel>
                       <Select
-                        // disabled={loading}
+                        disabled={val.disabled}
                         onValueChange={field.onChange}
                         value={field.value}
                         defaultValue={field.value}
