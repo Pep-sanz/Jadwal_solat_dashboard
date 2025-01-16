@@ -30,8 +30,8 @@ export const useSignIn = () => {
       const { data } = mutation;
 
       toast({
-        title: 'Success',
-        description: 'login successfully',
+        title: 'Berhasil',
+        description: 'Login Berhasil',
         variant: 'success',
         duration: 3000,
       });
@@ -45,7 +45,7 @@ export const useSignIn = () => {
       setTimeout(() => {
         location.reload();
         setTimeout(() => {
-          navigate.push('/');
+          navigate.push('/mosque');
         }, 100);
       }, 300);
     }
@@ -55,11 +55,12 @@ export const useSignIn = () => {
 
       const messageError =
         (Object.values(error.response?.data.errors?.[0] || {}) as any) ||
-        'Gagal membuat pengumuman';
+        'Gagal masuk';
       toast({
         title: 'Gagal',
         variant: 'destructive',
         description: messageError || 'Gagal masuk',
+        duration: 3000,
       });
     }
   }, [mutation.status]);
@@ -83,8 +84,9 @@ export const useSignUp = () => {
       const { data } = mutation;
 
       toast({
-        description: 'Success',
-        variant: 'default',
+        title: 'Berhasil',
+        description: 'Register Berhasil',
+        variant: 'success',
       });
 
       sessionStorage.setItem('accessToken', data.access);
@@ -150,11 +152,11 @@ export const useVerifyEmail = () => {
         );
 
         toast({
-          description: 'Email berhasil diverifikasi!',
+          description: 'Email berhasil diverifikasi',
           variant: 'default',
         });
 
-        navigate.push('/');
+        navigate.push('/mosque');
       } else {
         throw new Error('Token tidak ditemukan. Silakan coba lagi.');
       }
@@ -170,6 +172,44 @@ export const useVerifyEmail = () => {
         title: 'Gagal',
         variant: 'destructive',
         description: messageError || 'Gagal masuk',
+      });
+    }
+  }, [mutation.status]);
+
+  return mutation;
+};
+
+export const useResendOtp = () => {
+  const { toast } = useToast();
+  const mutation = useMutation<any, Error, any>({
+    mutationFn: async (body: any) => {
+      const response = await fetcherAuth.post('/resend-email-otp/', body);
+      return response.data;
+    },
+  });
+
+  useEffect(() => {
+    const status = mutation.status;
+    if (status == 'success') {
+      const { data } = mutation;
+
+      toast({
+        title: 'Berhasil',
+        description: 'OTP berhasil dikirimkan!',
+        variant: 'success',
+      });
+    }
+
+    if (status == 'error') {
+      const error = mutation.error as AxiosError<any>;
+
+      const messageError =
+        (Object.values(error.response?.data.errors?.[0] || {}) as any) ||
+        'Gagal Mengirimkan Ulang OTP';
+      toast({
+        title: 'Gagal',
+        variant: 'destructive',
+        description: messageError || 'Gagal Mengirimkan Ulang OTP ',
       });
     }
   }, [mutation.status]);

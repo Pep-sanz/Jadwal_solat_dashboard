@@ -1,14 +1,17 @@
 'use client';
 
+import { Button } from '@/components/ui/button';
 import {
   Card,
+  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import path from 'path';
 
 export default function AuthLayout({
   children,
@@ -16,11 +19,20 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   const pathName = usePathname();
-  console.log(pathName);
   return (
-    <div className="min-h-screen flex justify-center items-start md:items-center p-8">
-      <Card className="max-w-sm">
+    <div className="min-h-screen w-full grid justify-items-center items-center p-8">
+      <Card className="max-w-sm h-fit sm:w-[400px]">
         <CardHeader>
+          {pathName !== '/sign-in' && (
+            <Button
+              variant={'ghost'}
+              onClick={() => history.back()}
+              className="w-fit pl-0"
+            >
+              <ArrowLeft />
+              <p>Kembali</p>
+            </Button>
+          )}
           <CardTitle className="text-2xl">
             {pathName === '/sign-up'
               ? 'Sign Up'
@@ -30,13 +42,14 @@ export default function AuthLayout({
           </CardTitle>
           <CardDescription>
             {pathName === '/sign-up'
-              ? 'Enter your email correctly to receive the OTP code'
+              ? 'Masukkan email Anda dengan benar untuk menerima kode OTP'
               : pathName === '/sign-in'
-                ? 'Enter your email and password to sign in'
-                : 'Enter the OTP code to verify your email'}
+                ? 'Masukkan email dan kata sandi Anda'
+                : 'Masukkan kode OTP yang telah dikirimkan ke email Anda'}
           </CardDescription>
         </CardHeader>
-        <CardFooter>{children}</CardFooter>
+        <CardContent>{children}</CardContent>
+        {/* <CardFooter></CardFooter> */}
       </Card>
     </div>
   );

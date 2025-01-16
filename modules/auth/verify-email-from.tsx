@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/input-otp';
 import { useVerifyEmail } from '@/hooks/useAuth';
 import { useParams } from 'next/navigation';
+import OTPCounter from './OTPCounter';
 
 export const signinSchema = z.object({
   email: z.string().email().min(1, { message: 'Field ini harus diisi' }),
@@ -35,19 +36,38 @@ const VerifyEmailFrom = () => {
 
   console.log(email);
 
+  const otpDate = Date.now();
+
+  const handleDate = async () => {
+    // try {
+    // const response: any = await postSendOtp({
+    //   email: email,
+    // });
+    //   if (response) {
+    //     const seccond = 6; // one minute
+    //     handleOtpDate(Date.now() + seccond * 10000); //seccond
+    //     notification.success({
+    //       message: 'The verification email has been sent',
+    //     });
+    //   }
+    // } catch (error: any) {
+    //   Modal.error({
+    //     title: 'Error',
+    //     content: ` ${Object.values(error?.response?.data)}`,
+    //     okType: 'danger',
+    //   });
+    // console.log(error);
+    // }
+  };
+
   // const handleSubmit = () => {
   //   const { email, password } = form.getValues();
   //   mutate({ email, password });
   //   console.log(cookies.get(process.env.COOKIE_NAME as string));
   // };
   return (
-    <div className="space-y-4 w-full">
-      <InputOTP
-        className=" justify-center"
-        maxLength={6}
-        value={value}
-        onChange={setValue}
-      >
+    <div className="space-y-6 w-full">
+      <InputOTP maxLength={6} value={value} onChange={setValue}>
         <InputOTPGroup>
           <InputOTPSlot index={0} />
           <InputOTPSlot index={1} />
@@ -66,15 +86,18 @@ const VerifyEmailFrom = () => {
         onClick={() => mutate({ email, otp: value })}
         loading={status === 'pending'}
       >
-        Register
+        Verifikasi
       </Button>
       <div className="w-full flex justify-center mt-6">
-        <p className="text-xs text-muted-foreground">
-          Resend OTP{' '}
-          <Link href="/sign-up" className="text-blue-500 hover:underline">
-            Klik disini
-          </Link>
-        </p>
+        <div className="text-xs flex items-center space-x-2 text-muted-foreground">
+          <p>Belum Mendapatkan OTP?</p>
+          <OTPCounter
+            date={otpDate}
+            handleDate={handleDate}
+            // key={DateSendOtp}
+            loading={false}
+          />
+        </div>
       </div>
     </div>
   );
