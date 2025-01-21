@@ -6,7 +6,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
+  FormMessage
 } from '@/components/ui/form';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
 import {
@@ -14,7 +14,7 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from '@/components/ui/select';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
@@ -31,12 +31,12 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
-  CommandList,
+  CommandList
 } from '@/components/ui/command';
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger,
+  PopoverTrigger
 } from '@/components/ui/popover';
 import { cn } from '@/lib/utils';
 import clsx from 'clsx';
@@ -100,7 +100,7 @@ const listColSpan = {
   9: 'col-span-9',
   10: 'col-span-10',
   11: 'col-span-11',
-  12: 'col-span-12',
+  12: 'col-span-12'
 };
 
 const FormGenerator = ({ form, data, onSubmit, id, className }: Props) => {
@@ -126,9 +126,7 @@ const FormGenerator = ({ form, data, onSubmit, id, className }: Props) => {
               <div
                 key={val.name}
                 className={clsx(
-                  `${
-                    listColSpan[(val.grid as keyof typeof listColSpan) || 12]
-                  }`,
+                  `${listColSpan[(val.grid as keyof typeof listColSpan) || 12]}`
                 )}
               >
                 <FormField
@@ -194,13 +192,13 @@ const FormGenerator = ({ form, data, onSubmit, id, className }: Props) => {
                           {form.watch(val.name)
                             ? val?.options?.find(
                                 (framework) =>
-                                  framework.id === form.watch(val.name),
+                                  framework.id === form.watch(val.name)
                               )?.label
                             : val.placeholder || 'Pilih'}
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-[350px] p-0">
+                      {/* <PopoverContent className="w-[350px] p-0">
                         <Command>
                           <CommandInput
                             placeholder="Search framework..."
@@ -240,7 +238,7 @@ const FormGenerator = ({ form, data, onSubmit, id, className }: Props) => {
                             ))}
                           </CommandList>
                         </Command>
-                      </PopoverContent>
+                      </PopoverContent> */}
                     </Popover>
                   </>
                 )}
@@ -253,9 +251,7 @@ const FormGenerator = ({ form, data, onSubmit, id, className }: Props) => {
               <div
                 key={val.name}
                 className={clsx(
-                  `${
-                    listColSpan[(val.grid as keyof typeof listColSpan) || 12]
-                  }`,
+                  `${listColSpan[(val.grid as keyof typeof listColSpan) || 12]}`
                 )}
               >
                 <FormField
@@ -285,9 +281,7 @@ const FormGenerator = ({ form, data, onSubmit, id, className }: Props) => {
               <div
                 key={val.name}
                 className={clsx(
-                  `${
-                    listColSpan[(val.grid as keyof typeof listColSpan) || 12]
-                  }`,
+                  `${listColSpan[(val.grid as keyof typeof listColSpan) || 12]}`
                 )}
               >
                 <FormField
@@ -403,9 +397,9 @@ const FormGenerator = ({ form, data, onSubmit, id, className }: Props) => {
               moment()
                 .set({
                   hours: Number(form.getValues(val.name)?.split(':')[0] | 0),
-                  minutes: Number(form.getValues(val.name)?.split(':')[1] | 0),
+                  minutes: Number(form.getValues(val.name)?.split(':')[1] | 0)
                 })
-                .toDate(),
+                .toDate()
             );
 
             const minuteRef = React.useRef<HTMLInputElement>(null);
@@ -414,7 +408,7 @@ const FormGenerator = ({ form, data, onSubmit, id, className }: Props) => {
             useEffect(() => {
               form.setValue(
                 val.name,
-                !date ? '00:00' : moment(date).format('HH:mm'),
+                !date ? '00:00' : moment(date).format('HH:mm')
               );
             }, [date]);
 
@@ -422,9 +416,7 @@ const FormGenerator = ({ form, data, onSubmit, id, className }: Props) => {
               <div
                 key={val.name}
                 className={clsx(
-                  `${
-                    listColSpan[(val.grid as keyof typeof listColSpan) || 12]
-                  }`,
+                  `${listColSpan[(val.grid as keyof typeof listColSpan) || 12]}`
                 )}
               >
                 <FormField
@@ -465,9 +457,7 @@ const FormGenerator = ({ form, data, onSubmit, id, className }: Props) => {
               <div
                 key={val.name}
                 className={clsx(
-                  `${
-                    listColSpan[(val.grid as keyof typeof listColSpan) || 12]
-                  }`,
+                  `${listColSpan[(val.grid as keyof typeof listColSpan) || 12]}`
                 )}
               >
                 <FormField
@@ -495,9 +485,7 @@ const FormGenerator = ({ form, data, onSubmit, id, className }: Props) => {
               <div
                 key={val.name}
                 className={clsx(
-                  `${
-                    listColSpan[(val.grid as keyof typeof listColSpan) || 12]
-                  }`,
+                  `${listColSpan[(val.grid as keyof typeof listColSpan) || 12]}`
                 )}
               >
                 <FormField
