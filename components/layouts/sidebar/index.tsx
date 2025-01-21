@@ -4,7 +4,7 @@ import { VercelLogo } from '@/components/icons';
 import {
   Tooltip,
   TooltipContent,
-  TooltipTrigger,
+  TooltipTrigger
 } from '@/components/ui/tooltip';
 import {
   Home,
@@ -12,7 +12,7 @@ import {
   Package,
   Settings,
   ShoppingCart,
-  Users2,
+  Users2
 } from 'lucide-react';
 import Link from 'next/link';
 import { NavItem } from './nav-item';
@@ -37,11 +37,14 @@ export function AppSidebar() {
           <TbDeviceDesktop className="h-5 w-5" />
         </NavItem>
 
-        <NavItem href="#" label="Orders">
+        <NavItem href={`/dashboard/${mosqueId}/slider`} label="Slider">
           <ShoppingCart className="h-5 w-5" />
         </NavItem>
 
-        <NavItem href="/Products" label="Products">
+        <NavItem
+          href={`/dashboard/${mosqueId}/text-marquee`}
+          label="Text Marquee"
+        >
           <Package className="h-5 w-5" />
         </NavItem>
 
