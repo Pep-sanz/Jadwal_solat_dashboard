@@ -9,9 +9,11 @@ import {
 import {
   Home,
   LineChart,
+  List,
   Package,
   Settings,
   ShoppingCart,
+  Text,
   Users2
 } from 'lucide-react';
 import Link from 'next/link';
@@ -38,23 +40,23 @@ export function AppSidebar() {
         </NavItem>
 
         <NavItem href={`/dashboard/${mosqueId}/slider`} label="Slider">
-          <ShoppingCart className="h-5 w-5" />
+          <List className="h-5 w-5" />
         </NavItem>
 
         <NavItem
           href={`/dashboard/${mosqueId}/text-marquee`}
           label="Text Marquee"
         >
-          <Package className="h-5 w-5" />
+          <Text className="h-5 w-5" />
         </NavItem>
 
-        <NavItem href="/customers" label="Customers">
+        {/* <NavItem href="/customers" label="Customers">
           <Users2 className="h-5 w-5" />
         </NavItem>
 
         <NavItem href="#" label="Analytics">
           <LineChart className="h-5 w-5" />
-        </NavItem>
+        </NavItem> */}
       </nav>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
         <Tooltip>

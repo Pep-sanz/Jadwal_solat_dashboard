@@ -18,6 +18,7 @@ import { useCreateDevice } from '@/hooks/use-devices';
 import { DeviceSchema } from '@/types/devices.type';
 import { useParams } from 'next/navigation';
 import { useMosqueById } from '@/hooks/use-mosque';
+import { useCreateSlider } from '@/hooks/use-slider';
 
 interface Props {
   isOpen: boolean;
@@ -26,12 +27,12 @@ interface Props {
 
 export function CreateSlider(props: Props) {
   const params = useParams();
-  const { mutate, status } = useCreateDevice({
+  const { mutate, status } = useCreateSlider({
     mosque: params.mosqueId as string
   });
   const { data: dataMosque } = useMosqueById(params.mosqueId as string);
   const form = useForm({
-    resolver: zodResolver(DeviceSchema)
+    // resolver: zodResolver(DeviceSchema)
   });
 
   useEffect(() => {
@@ -40,51 +41,39 @@ export function CreateSlider(props: Props) {
     }
   }, [status]);
 
-  useEffect(() => {
-    form.reset({
-      mosque: dataMosque?.name || '',
-      is_active: false
-    });
-  }, [params.mosqueId, form, dataMosque]);
+  // useEffect(() => {
+  //   form.reset({
+  //     mosque: dataMosque?.name || '',
+  //     // is_active: false
+  //   });
+  // }, [params.mosqueId, form, dataMosque]);
 
   return (
     <Dialog open={props.isOpen} onOpenChange={props.onClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Tambah Perangkat</DialogTitle>
+          <DialogTitle>Tambah Slider</DialogTitle>
           <DialogDescription>
-            Tambahkan semua perangkat mu dan atur sesuka hati
+            Tambahkan semua slider mu dan atur sesuka hati
           </DialogDescription>
         </DialogHeader>
 
         <FormGenerator
           form={form}
           id="form"
-          onSubmit={(val: any) => mutate(val)}
+          onSubmit={(val: any) => mutate({ ...val, mosque: params.mosqueId })}
           data={[
             {
-              name: 'name',
-              type: 'text',
-              placeholder: 'Masukan Nama Perangkat',
-              label: 'Nama Perangkat'
+              name: 'text',
+              type: 'textarea',
+              placeholder: 'Masukan Text Slider',
+              label: 'Text Slider'
             },
             {
-              name: 'device_token',
-              type: 'text',
-              placeholder: 'Masukan token perangkat',
-              label: 'Token Perangkat'
-            },
-            {
-              name: 'mosque',
-              type: 'text',
-              disabled: true,
-              placeholder: 'Pilih Masjid',
-              label: 'Masjid'
-            },
-            {
-              name: 'is_active',
-              type: 'switch',
-              label: 'Status Perangkat'
+              name: 'image',
+              type: 'upload',
+              placeholder: 'Masukan Gambar',
+              label: 'Gambar Slider'
             }
           ]}
         />
