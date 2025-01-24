@@ -28,7 +28,10 @@ export const useCreateTextMarquees = ({ mosque }: { mosque: string }) => {
         ...body,
         mosque: mosque
       };
-      const response = await fetcher.post(`/text-marquees/`, finalyPayload);
+      const response = await fetcher.post(
+        `/customer/text-marquees/`,
+        finalyPayload
+      );
       return response.data;
     },
     onSuccess: () => {
@@ -68,7 +71,7 @@ export const useListTextMarquees = (params: { mosque?: string }) => {
   const query = useQuery<any>({
     queryKey: ['LIST_TEXT_MARQUEES'],
     queryFn: async () => {
-      const result = await fetcher.get('/text-marquees/', { params });
+      const result = await fetcher.get('/customer/text-marquees/', { params });
       return result.data;
     }
   });
@@ -81,7 +84,10 @@ export const useUpdateTextMarquees = (textId: string) => {
   const { toast } = useToast();
   const mutation = useMutation<any, Error, FormData>({
     mutationFn: async (body: FormData) => {
-      const result = await fetcher.put(`/text-marquees/${textId}/`, body);
+      const result = await fetcher.put(
+        `/customer/text-marquees/${textId}/`,
+        body
+      );
       return result.data;
     },
     onSuccess: () => {
@@ -121,7 +127,9 @@ export const useDeleteTextMarquues = (params: { mosque: string }) => {
 
   const mutation = useMutation<any, Error, string>({
     mutationFn: async (id: string) => {
-      const result = await fetcher.delete(`/text-marquees/${id}/`, { params });
+      const result = await fetcher.delete(`/customer/text-marquees/${id}/`, {
+        params
+      });
       return result.data;
     },
     onSuccess: () => {

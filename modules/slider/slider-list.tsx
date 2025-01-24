@@ -41,6 +41,7 @@ import { useDeleteDevice, useListDevices } from '@/hooks/use-devices';
 import { Badge } from '@/components/ui/badge';
 import BaseConfirm from '@/components/elements/base-confirm';
 import { CreateSlider } from './create-slider';
+import { useDeleteSlider, useListSlider } from '@/hooks/use-slider';
 
 export default function DeviceList() {
   const router = useRouter();
@@ -51,13 +52,13 @@ export default function DeviceList() {
     update: false,
     delete: false
   });
-  const { data, isFetching } = useListDevices({
+  const { data, isFetching } = useListSlider({
     mosque: params.mosqueId as string
   });
-  const { mutate, status } = useDeleteDevice({
+  const { mutate, status } = useDeleteSlider({
     mosque: params.mosqueId as string
   });
-  const [device, setDevice] = useState<any>({});
+  const [selected, setSelected] = useState<any>({});
 
   useEffect(() => {
     if (!isFetching && data?.length === 0) {
@@ -72,22 +73,19 @@ export default function DeviceList() {
       cell: ({ row }: any) => row.index + 1
     },
     {
-      accessorKey: 'name',
-      header: 'Nama'
+      accessorKey: 'text',
+      header: 'Text'
     },
-    {
-      accessorKey: 'device_token',
-      header: 'Token'
-    },
-    {
-      accessorKey: 'is_active',
-      header: 'Status',
-      cell: ({ row }: any) => (
-        <Badge variant={row.original.is_active ? 'success' : 'destructive'}>
-          {row.original.is_active ? 'Aktif' : 'Tidak Aktif'}
-        </Badge>
-      )
-    },
+
+    // {
+    //   accessorKey: 'is_active',
+    //   header: 'Status',
+    //   cell: ({ row }: any) => (
+    //     <Badge variant={row.original.is_active ? 'success' : 'destructive'}>
+    //       {row.original.is_active ? 'Aktif' : 'Tidak Aktif'}
+    //     </Badge>
+    //   )
+    // },
     {
       accessorKey: 'created_at',
       header: 'Tanggal Pembuatan',
@@ -112,7 +110,7 @@ export default function DeviceList() {
             <DropdownMenuLabel>Aksi</DropdownMenuLabel>
             <DropdownMenuItem
               onClick={() => {
-                setDevice(row.original);
+                setSelected(row.original);
                 setDialog((prev) => ({ ...prev, detail: true }));
               }}
             >
@@ -120,7 +118,7 @@ export default function DeviceList() {
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
-                setDevice(row.original);
+                setSelected(row.original);
                 setDialog((prev) => ({ ...prev, update: true }));
               }}
             >
@@ -128,7 +126,7 @@ export default function DeviceList() {
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
-                setDevice(row.original);
+                setSelected(row.original);
                 setDialog((prev) => ({ ...prev, delete: true }));
               }}
             >
@@ -168,7 +166,7 @@ export default function DeviceList() {
         onOpenChange={() => {
           setDialog((prev) => ({ ...prev, delete: false }));
         }}
-        onConfirm={() => mutate(device.id as string)}
+        onConfirm={() => mutate(selected.id as string)}
         status={status}
         textBtnConfirm="Hapus"
         title="Hapus Perangkat"

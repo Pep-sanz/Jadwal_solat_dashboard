@@ -68,7 +68,7 @@ export function UpdateMarquee(props: Props) {
           data={[
             {
               name: 'text',
-              type: 'text',
+              type: 'textarea',
               placeholder: 'Masukan Text',
               label: 'Text'
             }
